@@ -359,3 +359,18 @@ if('serviceWorker' in navigator){
 
 load();
 renderTimer();
+
+// Bloqueio extra de zoom (pinça e double-tap) — reforço além do meta viewport
+document.addEventListener('touchstart', function(e){
+  if(e.touches.length > 1) e.preventDefault();
+}, { passive:false });
+
+let ultimoToque = 0;
+document.addEventListener('touchend', function(e){
+  const agora = Date.now();
+  if(agora - ultimoToque <= 300) e.preventDefault();
+  ultimoToque = agora;
+}, { passive:false });
+
+document.addEventListener('gesturestart', function(e){ e.preventDefault(); }, { passive:false });
+document.addEventListener('gesturechange', function(e){ e.preventDefault(); }, { passive:false });
